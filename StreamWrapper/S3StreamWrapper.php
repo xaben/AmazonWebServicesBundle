@@ -46,32 +46,7 @@ class S3StreamWrapper extends BaseS3StreamWrapper
      */
     public function mkdir($path, $mode, $options)
     {
-        // Get the value that was *actually* passed in as mode, and default to 0
-        $trace_slice = array_slice(debug_backtrace(), -1);
-        $mode = isset($trace_slice[0]['args'][1]) ? decoct($trace_slice[0]['args'][1]) : 0;
-
-        $this->path = $path;
-        list($protocol, $bucket, $object_name) = $this->parse_path($path);
-
-        if (in_array($mode, range(700, 799)))
-        {
-            $acl = AmazonS3::ACL_PUBLIC;
-        }
-        elseif (in_array($mode, range(600, 699)))
-        {
-            $acl = AmazonS3::ACL_AUTH_READ;
-        }
-        else
-        {
-            $acl = AmazonS3::ACL_PRIVATE;
-        }
-
-        $client = $this->client($protocol);
-        $region = $client->hostname;
-        $response = $client->create_bucket($bucket, $region, $acl);
-
         return true;
-        //return $response->isOK();
     }
 
     public static function register(\AmazonS3 $s3 = null, $protocol = 's3')
