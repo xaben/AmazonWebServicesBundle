@@ -19,6 +19,9 @@ class S3StreamWrapper extends BaseS3StreamWrapper
 
         list($protocol, $bucket, $object_name) = $this->parse_path($this->path);
 
+        //fix objectname
+        $object_name =  str_replace("\\", "/", $object_name);
+
         $extension = explode('.', $object_name);
         $extension = array_pop($extension);
         if ('woff' === $extension) {
@@ -26,6 +29,7 @@ class S3StreamWrapper extends BaseS3StreamWrapper
         } else {
             $contentType = CFMimeTypes::get_mimetype($extension);
         }
+
 
         $response = $this->client($protocol)->create_object($bucket, $object_name, array(
             'body' => $this->buffer,
