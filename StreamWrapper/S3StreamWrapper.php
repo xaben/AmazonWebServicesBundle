@@ -30,6 +30,8 @@ class S3StreamWrapper extends BaseS3StreamWrapper
         $response = $this->client($protocol)->create_object($bucket, $object_name, array(
             'body' => $this->buffer,
             'contentType' => $contentType,
+            'storage' => 'REDUCED_REDUNDANCY',
+            'acl'=> 'public-read'
         ));
 
         $this->seek_position = 0;
