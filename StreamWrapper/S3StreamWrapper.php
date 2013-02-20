@@ -30,6 +30,7 @@ class S3StreamWrapper extends BaseS3StreamWrapper
         $response = $this->client($protocol)->create_object($bucket, $object_name, array(
             'body' => $this->buffer,
             'contentType' => $contentType,
+            'headers' => array('Cache-Control'=>'max-age=604800')
         ));
 
         $this->seek_position = 0;
